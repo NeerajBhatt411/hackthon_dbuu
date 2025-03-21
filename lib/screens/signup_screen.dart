@@ -17,6 +17,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             // username field
             CommonWidget.buildTextFormField(
-                controller: TextEditingController(),
+                controller: nameController,
                 prefixIcon: Icons.person,
                 labelText: "Username"),
             SizedBox(
@@ -73,7 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Ftoast.toastMessage("Tapped");
                 SignupController controller = SignupController();
                 await controller.signUpUser(emailController.text.toString(),
-                    passwordController.text.toString(),context);
+                    passwordController.text.toString(), nameController.text.toString() ,context);
               },
             ),
             SizedBox(

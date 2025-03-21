@@ -6,11 +6,13 @@ class ProductModel{
  String color;
  String price;
 
+
  ProductModel({
    required this.id,
    required this.name,
    required this.color,
    required this.price,
+
 });
  //converting  productmodel  to map
 Map<String ,dynamic> toMap() {
@@ -19,6 +21,8 @@ Map<String ,dynamic> toMap() {
     "Name": name,
     "Color": color,
     "Price": price,
+
+
   };
 }
   // converting product map to productModel
@@ -28,6 +32,7 @@ Map<String ,dynamic> toMap() {
      name: map['Name'],
      color: map['Color'],
      price: map['Price'],
+
    );
  }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled2/google.dart';
+import 'package:untitled2/screenHackthon/splash_screen1.dart';
 import 'package:untitled2/screens/login_screen.dart';
 import 'package:untitled2/screens/spalsh_screen.dart';
 import 'firebase_options.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: SplashScreen1(),
     );
   }
 }

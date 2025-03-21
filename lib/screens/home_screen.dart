@@ -5,6 +5,7 @@ import 'package:untitled2/controller/login_controller.dart';
 import 'package:untitled2/screens/login_screen.dart';
 import 'package:untitled2/screens/products_screen.dart';
 import 'package:untitled2/screens/show_product.dart';
+import 'package:untitled2/screens/users_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -43,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
           CommonWidget.buildButton(text: "SHOW PRODUCTS", onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ShowProduct(),));
+          }),
+          CommonWidget.buildButton(text: "SHOW Users", onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen(),));
           }),
 
         ],

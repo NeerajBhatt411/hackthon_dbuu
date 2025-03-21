@@ -71,6 +71,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         price:
                           priceController.text.toString(),
 
+
                         id: '',
                     ));
                     nameController.clear();

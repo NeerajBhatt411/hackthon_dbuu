@@ -101,7 +101,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               Text(
                 "Find Docotor For Your Health Problem",
                 style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 20,
@@ -121,7 +121,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -157,7 +157,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -193,7 +193,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -239,7 +239,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -273,7 +273,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -307,7 +307,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                            Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -363,10 +363,10 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           ],
           gradient: (_hoverStates[index] ?? false)
               ? LinearGradient(
-                  colors: [Colors.blue.shade50, Colors.white],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
+            colors: [Colors.blue.shade50, Colors.white],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
               : null,
         ),
         child: Column(

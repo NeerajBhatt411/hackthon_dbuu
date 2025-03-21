@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 
 import 'book_appointment_screen.dart';
 
-class AppointmentDetailsScreen extends StatelessWidget {
+class AppointmentDetailsScreen extends StatefulWidget {
   final Map<String, dynamic>? doctor; // Make doctor optional
 
   // Constructor with optional doctor parameter
   const AppointmentDetailsScreen({this.doctor, Key? key}) : super(key: key);
+
+  @override
+  _AppointmentDetailsScreenState createState() => _AppointmentDetailsScreenState();
+}
+
+class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
+  String? selectedTimeSlot; // To store the selected time slot
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +29,19 @@ class AppointmentDetailsScreen extends StatelessWidget {
           children: [
             // Doctor's Name and Specialty
             Text(
-              doctor?['name'] ?? 'No Doctor Selected', // Handle null case
+              widget.doctor?['name'] ?? 'No Doctor Selected', // Handle null case
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
-              doctor?['specialty'] ?? 'Specialty Not Available', // Handle null case
+              widget.doctor?['specialty'] ?? 'Specialty Not Available', // Handle null case
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
             SizedBox(height: 16),
 
             // Doctor's Fees
             Text(
-              'Consultation Fee: ${doctor?['price'] ?? 'N/A'}', // Handle null case
+              'Consultation Fee: ${widget.doctor?['price'] ?? 'N/A'}', // Handle null case
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 24),
@@ -52,13 +59,26 @@ class AppointmentDetailsScreen extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to BookAppointmentScreen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookAppointmentScreen(),
-                    ),
-                  );
+                  if (selectedTimeSlot == null) {
+                    // Show error if no time slot is selected
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please select a time slot!'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else {
+                    // Navigate to BookAppointmentScreen with selected time slot
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookAppointmentScreen(
+                          doctor: widget.doctor,
+                          selectedTimeSlot: selectedTimeSlot,
+                        ),
+                      ),
+                    );
+                  }
                 },
                 child: Text(
                   'Book Appointment',
@@ -88,20 +108,23 @@ class AppointmentDetailsScreen extends StatelessWidget {
       '04:00 PM - 04:30 PM',
     ];
 
-    return Column(
-      children: slots.map((slot) {
-        return Card(
-          margin: EdgeInsets.symmetric(vertical: 4),
-          child: ListTile(
-            title: Text(slot),
-            onTap: () {
-              // Handle slot selection
-              print('Selected Slot: $slot');
-            },
-          ),
+    return DropdownButtonFormField<String>(
+      value: selectedTimeSlot,
+      decoration: InputDecoration(
+        labelText: 'Select Time Slot',
+        border: OutlineInputBorder(),
+      ),
+      items: slots.map((String slot) {
+        return DropdownMenuItem<String>(
+          value: slot,
+          child: Text(slot),
         );
       }).toList(),
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedTimeSlot = newValue;
+        });
+      },
     );
   }
 }
-

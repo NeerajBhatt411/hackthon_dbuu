@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled2/screenHackthon/help.dart';
 import 'package:untitled2/screenHackthon/profile_screen.dart';
-import 'package:untitled2/screenHackthon/reports.dart';
+import 'package:untitled2/screenHackthon/reports_screen.dart';
 
 import 'home_screen1.dart';
 
@@ -13,7 +13,7 @@ class PatientBottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<PatientBottomBar> {
-  List<Widget> list = [HomeScreen1(), Reports(), Help(), ProfileScreen()];
+  List<Widget> list = [HomeScreen1(), ReportsScreen(), Help(), ProfileScreen()];
 
   int _selectedIndex = 0;
 

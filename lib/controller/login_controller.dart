@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:untitled2/screenHackthon/patient_home_screen.dart';
 
 import '../screens/home_screen.dart';
 import '../util/toast.dart';
@@ -16,16 +17,16 @@ class LoginController {
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then(
-      (value) {
+          (value) {
         Ftoast.toastMessage("Login Successfully");
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => PatientHomeScreen(),
             ));
       },
     ).onError(
-      (error, stackTrace) {
+          (error, stackTrace) {
         Ftoast.toastMessage(error.toString());
       },
     );
@@ -48,7 +49,7 @@ class LoginController {
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
       Ftoast.toastMessage("User Successfully Logged in with Google ");
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeScreen(),));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PatientHomeScreen(),));
     },).onError((error, stackTrace) {
       Ftoast.toastMessage("usser failed to login ${error.toString()}");
 

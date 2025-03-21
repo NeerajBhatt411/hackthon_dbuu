@@ -5,7 +5,18 @@ class ReportsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Reports'),
+        title: Text(
+          'Appointment Reports',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        elevation: 10,
+        shadowColor: Colors.blueAccent.withOpacity(0.5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,34 +96,55 @@ class ReportsScreen extends StatelessWidget {
         );
       },
       child: Card(
-        elevation: 4,
+        elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
         ),
+        color: Colors.white,
+        shadowColor: Colors.blueAccent.withOpacity(0.3),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Doctor's Name
               Text(
-                'Appointment with $doctorName',
+                '👨‍⚕️ $doctorName',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
+                ),
+              ),
+              SizedBox(height: 8),
+
+              // Appointment Date
+              Text(
+                '📅 $appointmentDate',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[800],
+                ),
+              ),
+              SizedBox(height: 8),
+
+              // Fees
+              Text(
+                '💸 Fees: $fees',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.green,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 8),
+
+              // Problem
               Text(
-                'Date: $appointmentDate',
-                style: TextStyle(fontSize: 14),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Fees: $fees',
+                '🩺 Problem: $problem',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.grey[800],
                 ),
               ),
             ],
@@ -143,86 +175,122 @@ class AppointmentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Appointment Details'),
+        title: Text(
+          'Appointment Details',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        elevation: 10,
+        shadowColor: Colors.blueAccent.withOpacity(0.5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Doctor's Name
-            Text(
-              'Doctor: $doctorName',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 16),
+        child: Card(
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          color: Colors.white,
+          shadowColor: Colors.blueAccent.withOpacity(0.3),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Doctor's Name
+                Text(
+                  '👨‍⚕️ Doctor: $doctorName',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                SizedBox(height: 16),
 
-            // Appointment Date
-            Text(
-              'Appointment Date:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              appointmentDate,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
+                // Appointment Date
+                Text(
+                  '📅 Appointment Date:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  appointmentDate,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 16),
 
-            // Fees
-            Text(
-              'Fees:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              fees,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 16),
+                // Fees
+                Text(
+                  '💸 Fees:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  fees,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16),
 
-            // Problem
-            Text(
-              'Problem:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              problem,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
+                // Problem
+                Text(
+                  '🩺 Problem:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  problem,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 16),
 
-            // Doctor's Suggestion
-            Text(
-              'Doctor\'s Suggestion:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+                // Doctor's Suggestion
+                Text(
+                  '💡 Doctor\'s Suggestion:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  doctorSuggestion,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800],
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              doctorSuggestion,
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
+          ),
         ),
       ),
     );

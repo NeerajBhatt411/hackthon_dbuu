@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
 import 'package:untitled2/screenHackthon/doctor_detail.dart';
 import 'package:untitled2/util/app_theme.dart';
 
@@ -19,14 +20,28 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
           title: Text(
-            "Home ",
+            "Home",
             style: TextStyle(
-                color: AppTheme.primaryColor, fontWeight: FontWeight.bold),
+              color: Colors.white,
+
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
           ),
           centerTitle: false,
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xffd1e8f1),
+          // backgroundColor: Colors.white,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.notifications, color: Colors.white),
+              onPressed: () {
+                // Handle notification button press
+              },
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -51,15 +66,28 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                         Expanded(
                           child: _buildOptionCard(
                             index: 0,
-                            imagePath: 'assets/icons/patienthome.png',
+                            imagePath: 'assets/icons/docotor2.png',
                             title: 'Book In-Clinic Appointment',
+                            onTap: () {
+                              // Handle in-clinic appointment booking
+                            },
                           ),
                         ),
                         Expanded(
                           child: _buildOptionCard(
                             index: 1,
-                            imagePath: 'assets/icons/Image (1).png',
+                            imagePath: 'assets/icons/doctor.png',
                             title: 'Instant Video Consultation',
+                            onTap: () async {
+                              // Open Google Meet link
+                              const url =
+                                  'https://meet.google.com/xhu-ctza-xok'; // Replace with your Google Meet link
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
                           ),
                         ),
                       ],
@@ -101,7 +129,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               Text(
                 "Find Docotor For Your Health Problem",
                 style:
-                TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 20,
@@ -114,14 +142,18 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -149,15 +181,18 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -185,15 +220,18 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -231,15 +269,18 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -266,14 +307,19 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                         width: 10,
                       ),
                       GestureDetector(
-                        onTap: () {                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -300,14 +346,19 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                         width: 10,
                       ),
                       GestureDetector(
-                        onTap: () {                          Navigator.push(context, MaterialPageRoute(builder: (context) => DocotorDetail(),));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DocotorDetail(),
+                              ));
                         },
                         child: Container(
                           width: 110,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                            Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], // Light background color
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -341,50 +392,57 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     );
   }
 
-  Widget _buildOptionCard(
-      {required int index, required String imagePath, required String title}) {
+  Widget _buildOptionCard({
+    required int index,
+    required String imagePath,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return MouseRegion(
       onEnter: (_) => setState(() => _hoverStates[index] = true),
       onExit: (_) => setState(() => _hoverStates[index] = false),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              spreadRadius: 2,
-              offset: Offset(0, 4),
-            ),
-          ],
-          gradient: (_hoverStates[index] ?? false)
-              ? LinearGradient(
-            colors: [Colors.blue.shade50, Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )
-              : null,
-        ),
-        child: Column(
-          children: [
-            Image.asset(imagePath, height: 100, fit: BoxFit.cover),
-            SizedBox(height: 10),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue.shade800,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          margin: EdgeInsets.all(8),
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
               ),
-            ),
-            SizedBox(height: 10),
-            Icon(Icons.arrow_forward_ios, size: 20, color: Colors.blue),
-          ],
+            ],
+            gradient: (_hoverStates[index] ?? false)
+                ? LinearGradient(
+                    colors: [Colors.blue.shade50, Colors.white],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : null,
+          ),
+          child: Column(
+            children: [
+              Image.asset(imagePath, height: 100, fit: BoxFit.cover),
+              SizedBox(height: 10),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue.shade800,
+                ),
+              ),
+              SizedBox(height: 10),
+              Icon(Icons.arrow_forward_ios, size: 20, color: Colors.blue),
+            ],
+          ),
         ),
       ),
     );

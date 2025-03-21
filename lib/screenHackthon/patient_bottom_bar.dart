@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/screenHackthon/help.dart';
+import 'package:untitled2/screenHackthon/upcoming_appoinments.dart';
 import 'package:untitled2/screenHackthon/patient_home_screen.dart';
 import 'package:untitled2/screenHackthon/profile_screen.dart';
 import 'package:untitled2/screenHackthon/reports_screen.dart';
@@ -12,7 +12,7 @@ class PatientBottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<PatientBottomBar> {
-  List<Widget> list = [PatientHomeScreen(), ReportsScreen(), Help(), ProfileScreen()];
+  List<Widget> list = [PatientHomeScreen(), ReportsScreen(), UpcomingAppointments(), ProfileScreen()];
 
   int _selectedIndex = 0;
 
@@ -33,7 +33,7 @@ class _BottomBarState extends State<PatientBottomBar> {
         showUnselectedLabels: false,
         onTap: onTap,
         elevation: 10,
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         items: [
@@ -41,7 +41,7 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.home, size: 24, color: _selectedIndex == 0 ? Colors.deepPurple : Colors.black),
+                Icon(Icons.home, size: 24, color: _selectedIndex == 0 ? Colors.blue : Colors.black),
                 Text("Home", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 0)
@@ -54,7 +54,7 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.insert_drive_file, size: 24, color: _selectedIndex == 1 ? Colors.deepPurple : Colors.black),
+                Icon(Icons.insert_drive_file, size: 24, color: _selectedIndex == 1 ? Colors.blue : Colors.black),
                 Text("Reports", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 1)
@@ -67,8 +67,8 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.help, size: 24, color: _selectedIndex == 2 ? Colors.deepPurple : Colors.black),
-                Text("Help", style: TextStyle(fontSize: 14)),
+                Icon(Icons.calendar_month_outlined, size: 24, color: _selectedIndex == 2 ? Colors.blue : Colors.black),
+                Text("Appoinments", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 2)
                   Container(height: 4, width: 40, color: Colors.blue),
@@ -80,7 +80,7 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.person, size: 24, color: _selectedIndex == 3 ? Colors.deepPurple : Colors.black),
+                Icon(Icons.person, size: 24, color: _selectedIndex == 3 ? Colors.blue : Colors.black),
                 Text("Profile", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 3)

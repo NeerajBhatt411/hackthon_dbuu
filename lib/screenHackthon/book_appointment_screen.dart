@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:fluttertoast/fluttertoast.dart'; // For toast messages
 
-import 'patient_home_screen.dart'; // Import PatientHomeScreen
+import 'patient_bottom_bar.dart'; // Import PatientBottomBar
 
 class BookAppointmentScreen extends StatelessWidget {
   final Map<String, dynamic>? doctor; // Add doctor parameter
@@ -43,11 +43,11 @@ class BookAppointmentScreen extends StatelessWidget {
         textColor: Colors.white,
       );
 
-      // Navigate to PatientHomeScreen
+      // Navigate to PatientBottomBar
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => PatientHomeScreen(),
+          builder: (context) => PatientBottomBar(),
         ),
             (route) => false, // Remove all previous routes
       );

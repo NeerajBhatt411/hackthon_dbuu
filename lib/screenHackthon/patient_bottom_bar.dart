@@ -4,8 +4,6 @@ import 'package:untitled2/screenHackthon/patient_home_screen.dart';
 import 'package:untitled2/screenHackthon/profile_screen.dart';
 import 'package:untitled2/screenHackthon/reports.dart';
 
-import 'home_screen1.dart';
-
 class PatientBottomBar extends StatefulWidget {
   const PatientBottomBar({super.key});
 
@@ -39,19 +37,15 @@ class _BottomBarState extends State<PatientBottomBar> {
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         items: [
-
           BottomNavigationBarItem(
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Home", style: TextStyle(fontSize: 16)),
+                Icon(Icons.home, size: 24, color: _selectedIndex == 0 ? Colors.deepPurple : Colors.black),
+                Text("Home", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 0)
-                  Container(
-                    height: 5,
-                    width: 40,
-                    color: Colors.blue,
-                  ),
+                  Container(height: 4, width: 40, color: Colors.blue),
               ],
             ),
             label: "",
@@ -60,30 +54,11 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Reports", style: TextStyle(fontSize: 16)),
+                Icon(Icons.insert_drive_file, size: 24, color: _selectedIndex == 1 ? Colors.deepPurple : Colors.black),
+                Text("Reports", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 1)
-                  Container(
-                    height: 5,
-                    width: 40,
-                    color: Colors.blue,
-                  ),
-              ],
-            ),
-            label: "Reports",
-          ),
-          BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Help", style: TextStyle(fontSize: 16)),
-                SizedBox(height: 5),
-                if (_selectedIndex == 2)
-                  Container(
-                    height: 5,
-                    width: 40,
-                    color: Colors.blue,
-                  ),
+                  Container(height: 4, width: 40, color: Colors.blue),
               ],
             ),
             label: "",
@@ -92,14 +67,24 @@ class _BottomBarState extends State<PatientBottomBar> {
             icon: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Profile", style: TextStyle(fontSize: 16)),
+                Icon(Icons.help, size: 24, color: _selectedIndex == 2 ? Colors.deepPurple : Colors.black),
+                Text("Help", style: TextStyle(fontSize: 14)),
+                SizedBox(height: 5),
+                if (_selectedIndex == 2)
+                  Container(height: 4, width: 40, color: Colors.blue),
+              ],
+            ),
+            label: "",
+          ),
+          BottomNavigationBarItem(
+            icon: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.person, size: 24, color: _selectedIndex == 3 ? Colors.deepPurple : Colors.black),
+                Text("Profile", style: TextStyle(fontSize: 14)),
                 SizedBox(height: 5),
                 if (_selectedIndex == 3)
-                  Container(
-                    height: 5,
-                    width: 40,
-                    color: Colors.blue,
-                  ),
+                  Container(height: 4, width: 40, color: Colors.blue),
               ],
             ),
             label: "",

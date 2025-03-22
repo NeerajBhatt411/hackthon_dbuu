@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:untitled2/screenHackthon/chat_screen.dart';
+import 'package:untitled2/screenHackthon/clinic_appoinment.dart';
 import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
 import 'package:untitled2/screenHackthon/doctor_detail.dart';
 import 'package:untitled2/util/app_theme.dart';
@@ -35,11 +37,18 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           // backgroundColor: Colors.white,
           elevation: 0,
           actions: [
-            IconButton(
-              icon: Icon(Icons.notifications, color: Colors.white),
-              onPressed: () {
-                // Handle notification button press
+            GestureDetector(
+              onTap: () {
+
+
               },
+              child: IconButton(
+                icon: Icon(Icons.notifications, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(),));
+
+                },
+              ),
             ),
           ],
         ),
@@ -69,6 +78,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                             imagePath: 'assets/icons/docotor2.png',
                             title: 'Book In-Clinic Appointment',
                             onTap: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => ClinicAppointment(),));
                               // Handle in-clinic appointment booking
                             },
                           ),
@@ -280,14 +290,14 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
-                                Colors.blueGrey[50], // Light background color
+                                Colors.blueGrey[50], 
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
-                                'assets/icons/img5.png', // Replace with your image path
+                                'assets/icons/img5.png',
                                 height: 60,
                                 width: 60,
                                 fit: BoxFit.contain,

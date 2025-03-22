@@ -8,89 +8,64 @@ class PatientBottomBar extends StatefulWidget {
   const PatientBottomBar({super.key});
 
   @override
-  State<PatientBottomBar> createState() => _BottomBarState();
+  State<PatientBottomBar> createState() => _PatientBottomBarState();
 }
 
-class _BottomBarState extends State<PatientBottomBar> {
-  List<Widget> list = [PatientHomeScreen(), ReportsScreen(), UpcomingAppointments(), ProfileScreen()];
+class _PatientBottomBarState extends State<PatientBottomBar> {
+  final List<Widget> _screens = [
+    const PatientHomeScreen(),
+     ReportsScreen(),
+    const UpcomingAppointments(),
+    const ProfileScreen(),
+  ];
 
-  int _selectedIndex = 0;
+  int _currentIndex = 0;
 
-  void onTap(int index) {
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: list[_selectedIndex]),
+      body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        currentIndex: _selectedIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: onTap,
-        elevation: 10,
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.home, size: 24, color: _selectedIndex == 0 ? Colors.blue : Colors.black),
-                Text("Home", style: TextStyle(fontSize: 14)),
-                SizedBox(height: 5),
-                if (_selectedIndex == 0)
-                  Container(height: 4, width: 40, color: Colors.blue),
-              ],
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.insert_drive_file, size: 24, color: _selectedIndex == 1 ? Colors.blue : Colors.black),
-                Text("Reports", style: TextStyle(fontSize: 14)),
-                SizedBox(height: 5),
-                if (_selectedIndex == 1)
-                  Container(height: 4, width: 40, color: Colors.blue),
-              ],
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.calendar_month_outlined, size: 24, color: _selectedIndex == 2 ? Colors.blue : Colors.black),
-                Text("Appoinments", style: TextStyle(fontSize: 14)),
-                SizedBox(height: 5),
-                if (_selectedIndex == 2)
-                  Container(height: 4, width: 40, color: Colors.blue),
-              ],
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.person, size: 24, color: _selectedIndex == 3 ? Colors.blue : Colors.black),
-                Text("Profile", style: TextStyle(fontSize: 14)),
-                SizedBox(height: 5),
-                if (_selectedIndex == 3)
-                  Container(height: 4, width: 40, color: Colors.blue),
-              ],
-            ),
-            label: "",
-          ),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        elevation: 10,
+        items: List.generate(4, (index) => _buildNavItem(index)),
+      ),
+    );
+  }
+
+  BottomNavigationBarItem _buildNavItem(int index) {
+    final List<Map<String, dynamic>> _navItems = [
+      {"icon": Icons.home, "label": "Home"},
+      {"icon": Icons.insert_drive_file, "label": "Reports"},
+      {"icon": Icons.calendar_month_outlined, "label": "Appointments"},
+      {"icon": Icons.person, "label": "Profile"},
+    ];
+
+    bool isSelected = _currentIndex == index;
+
+    return BottomNavigationBarItem(
+      icon: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(_navItems[index]["icon"], size: 24, color: isSelected ? Colors.blue : Colors.black),
+          Text(_navItems[index]["label"], style: const TextStyle(fontSize: 14)),
+          const SizedBox(height: 5),
+          if (isSelected) Container(height: 4, width: 40, color: Colors.blue),
         ],
       ),
+      label: "",
     );
   }
 }

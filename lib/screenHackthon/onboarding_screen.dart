@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:untitled2/screenHackthon/login_screen1.dart';
 import 'package:untitled2/screenHackthon/signup_screen1.dart';
 
-import '../screens/signup_screen.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -15,18 +13,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      home: WelcomeScreen(),
     );
   }
 }
 
-class OnboardingScreen extends StatelessWidget {
+class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,37 +35,39 @@ class OnboardingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Healthcare',
+              'MediCare',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueAccent,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             const Text(
-              "Let's get started!",
+              "Join us on your health journey!",
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 5),
             const Text(
-              'Login to Stay healthy and fit',
+              'Access top-notch healthcare at your fingertips.',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen1(),));
-
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen1()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -77,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  'Login',
+                  'Sign In',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
@@ -87,8 +87,10 @@ class OnboardingScreen extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignupScreen1(),));
-
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupScreen1()),
+                  );
                 },
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -98,7 +100,7 @@ class OnboardingScreen extends StatelessWidget {
                   side: const BorderSide(color: Colors.blue),
                 ),
                 child: const Text(
-                  'Sign Up',
+                  'Create Account',
                   style: TextStyle(fontSize: 16, color: Colors.blue),
                 ),
               ),

@@ -1,458 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/screenHackthon/chat_screen.dart';
-import 'package:untitled2/screenHackthon/clinic_appoinment.dart';
-import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
-import 'package:untitled2/screenHackthon/doctor_detail.dart';
-import 'package:untitled2/util/app_theme.dart';
-
-class PatientHomeScreen extends StatefulWidget {
-  const PatientHomeScreen({super.key});
-
-  @override
-  State<PatientHomeScreen> createState() => _PatientHomeScreenState();
-}
-
-class _PatientHomeScreenState extends State<PatientHomeScreen> {
-  final Map<int, bool> _hoverStates = {};
-
-  @override
-  Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          title: Text(
-            "Home",
-            style: TextStyle(
-              color: Colors.white,
-
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          // backgroundColor: Colors.white,
-          elevation: 0,
-          actions: [
-            GestureDetector(
-              onTap: () {
+import 'package:url_launcher/url_launcher.dart';
+import 'doctor_detail.dart';
 
 
-              },
-              child: IconButton(
-                icon: Icon(Icons.notifications, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(),));
+class PatientHomeScreen extends StatelessWidget {
+  const PatientHomeScreen({Key? key}) : super(key: key);
 
-                },
-              ),
+  void _launchVideoConsultation() async {
+    final Uri url = Uri.parse('https://meet.google.com/xhu-ctza-xok');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _buildDoctorCategory(BuildContext context, String imagePath, String title, Widget screen) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+      },
+      child: Container(
+        width: 110,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[50],
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(imagePath, height: 60, width: 60, fit: BoxFit.contain),
+            SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 330,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xffd1e8f1), Color(0xffe6f4f9)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: _buildOptionCard(
-                            index: 0,
-                            imagePath: 'assets/icons/docotor2.png',
-                            title: 'Book In-Clinic Appointment',
-                            onTap: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => ClinicAppointment(),));
-                              // Handle in-clinic appointment booking
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: _buildOptionCard(
-                            index: 1,
-                            imagePath: 'assets/icons/doctor.png',
-                            title: 'Instant Video Consultation',
-                            onTap: () async {
-                              // Open Google Meet link
-                              const url =
-                                  'https://meet.google.com/xhu-ctza-xok'; // Replace with your Google Meet link
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Container(
-                        height: screenHeight * 0.06,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Center(child: Icon(Icons.search)),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              "Search for Docotor",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            SizedBox(
-                              width: screenWidth * 0.15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Find Docotor For Your Health Problem",
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], // Light background color
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img1.png', // Replace with your image path
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'General Physician',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], // Light background color
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img4.png', // Replace with your image path
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Skin &     hair ',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], // Light background color
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img3.png', // Replace with your image path
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Womens Health",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], 
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img5.png',
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Dental    Care',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], // Light background color
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img6.png', // Replace with your image path
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Child Specialist',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DocotorDetail(),
-                              ));
-                        },
-                        child: Container(
-                          width: 110,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                Colors.blueGrey[50], // Light background color
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/icons/img7.png', // Replace with your image path
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.contain,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Ear,Nose Throat',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
 
-  Widget _buildOptionCard({
-    required int index,
-    required String imagePath,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hoverStates[index] = true),
-      onExit: (_) => setState(() => _hoverStates[index] = false),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          margin: EdgeInsets.all(8),
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: Offset(0, 4),
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Patient Home'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Doctor Categories',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                  children: [
+                  _buildDoctorCategory(context, 'assets/icons/img1.png', 'General Physician', DoctorDetailScreen()),
+              SizedBox(width: 10),
+              _buildDoctorCategory(context, 'assets/icons/img4.png', 'Skin & Hair', DoctorDetailScreen()),
+              SizedBox(width: 10),
+              _buildDoctorCategory(context, 'assets/icons/img3.png', 'Women Health', DoctorDetailScreen()),
+                ],
               ),
-            ],
-            gradient: (_hoverStates[index] ?? false)
-                ? LinearGradient(
-                    colors: [Colors.blue.shade50, Colors.white],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : null,
-          ),
-          child: Column(
-            children: [
-              Image.asset(imagePath, height: 100, fit: BoxFit.cover),
-              SizedBox(height: 10),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue.shade800,
-                ),
-              ),
-              SizedBox(height: 10),
-              Icon(Icons.arrow_forward_ios, size: 20, color: Colors.blue),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _launchVideoConsultation,
+              child: Text('Start Video Consultation'),
+            ),
+          ],
         ),
       ),
     );

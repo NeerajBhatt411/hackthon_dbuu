@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:untitled2/screenHackthon/payment_details.dart'; // Import Firestore
-
+import 'payment_details.dart';
 
 class UpcomingAppointments extends StatefulWidget {
   const UpcomingAppointments({super.key});
@@ -11,212 +10,114 @@ class UpcomingAppointments extends StatefulWidget {
 }
 
 class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
-  // Function to fetch appointments from Firestore
-  Stream<QuerySnapshot> _fetchAppointments() {
+  Stream<QuerySnapshot> _getAppointmentsStream() {
     return FirebaseFirestore.instance
         .collection('appointments')
-        .orderBy('timestamp', descending: false) // Sort by timestamp
+        .orderBy('timestamp', descending: false)
         .snapshots();
   }
 
-  // Function to generate a random color for cards
-  Color _getRandomColor(int index) {
-    final colors = [
-      Colors.blueAccent,
-      Colors.greenAccent,
-      Colors.orangeAccent,
-      Colors.purpleAccent,
-      Colors.redAccent,
+  Color _generateCardColor(int index) {
+    final List<Color> colorOptions = [
+      Colors.tealAccent,
+      Colors.deepPurpleAccent,
+      Colors.amberAccent,
+      Colors.indigoAccent,
+      Colors.pinkAccent,
     ];
-    return colors[index % colors.length];
+    return colorOptions[index % colorOptions.length];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Upcoming Appointments',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
-        elevation: 10,
-        shadowColor: Colors.blueAccent.withOpacity(0.5),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _fetchAppointments(),
+        stream: _getAppointmentsStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.blueAccent,
-              ),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
-
           if (snapshot.hasError) {
             return Center(
-              child: Text(
-                'Error: ${snapshot.error}',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.red,
-                ),
-              ),
+              child: Text('Error loading data: ${snapshot.error}'),
             );
           }
-
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text(
-                'No upcoming appointments found.',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[600],
-                ),
-              ),
+            return const Center(
+              child: Text('No appointments available.'),
             );
           }
 
-          // Display appointments in a list
           return ListView.builder(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              var appointment = snapshot.data!.docs[index];
-              var data = appointment.data() as Map<String, dynamic>;
+              var doc = snapshot.data!.docs[index];
+              var appointmentData = doc.data() as Map<String, dynamic>;
 
-              return AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                margin: EdgeInsets.only(bottom: 16),
-                child: Card(
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  color: _getRandomColor(index).withOpacity(0.1),
-                  shadowColor: _getRandomColor(index).withOpacity(0.4),
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Doctor's Name
-                        Text(
-                          '👨‍⚕️ Doctor: ${data['doctorName']}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                        SizedBox(height: 12),
-
-                        // Doctor's Specialty
-                        Text(
-                          '🩺 Specialty: ${data['doctorSpecialty']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        // Time Slot
-                        Text(
-                          '⏰ Time: ${data['timeSlot']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        // Patient's Name
-                        Text(
-                          '👤 Patient: ${data['patientName']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        // Patient's Email
-                        Text(
-                          '📧 Email: ${data['email']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        // Patient's Phone
-                        Text(
-                          '📞 Phone: ${data['phone']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        // Appointment Timestamp
-                        Text(
-                          '📅 Booked on: ${data['timestamp']}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        SizedBox(height: 12),
-
-                        // Pay for Appointments Button
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Navigate to Payment Details Screen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PaymentDetailsScreen(
-                                    doctorName: data['doctorName'],
-                                    doctorSpecialty: data['doctorSpecialty'],
-                                    timeSlot: data['timeSlot'],
-                                    patientName: data['patientName'],
-                                    email: data['email'],
-                                    phone: data['phone'],
-                                    timestamp: data['timestamp'],
-                                  ),
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                color: _generateCardColor(index).withOpacity(0.2),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Doctor: ${appointmentData['doctorName']}',
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      Text('Specialty: ${appointmentData['doctorSpecialty']}'),
+                      Text('Time: ${appointmentData['timeSlot']}'),
+                      Text('Patient: ${appointmentData['patientName']}'),
+                      Text('Email: ${appointmentData['email']}'),
+                      Text('Phone: ${appointmentData['phone']}'),
+                      Text('Booked on: ${appointmentData['timestamp']}'),
+                      const SizedBox(height: 12),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaymentDetailsScreen(
+                                  doctorName: appointmentData['doctorName'],
+                                  doctorSpecialty:
+                                  appointmentData['doctorSpecialty'],
+                                  timeSlot: appointmentData['timeSlot'],
+                                  patientName: appointmentData['patientName'],
+                                  email: appointmentData['email'],
+                                  phone: appointmentData['phone'],
+                                  timestamp: appointmentData['timestamp'],
                                 ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ),
-                            child: Text(
-                              'Pay for Appointment',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          child: const Text(
+                            'Proceed to Payment',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/screenHackthon/book_appointment_screen.dart';
 import 'package:untitled2/screenHackthon/reports_screen.dart';
 import 'package:untitled2/screenHackthon/upcoming_appoinments.dart';
-import 'package:untitled2/util/app_theme.dart';
+import '../util/app_theme.dart';
 import 'app_style.dart';
+import 'book_appointment_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,10 +13,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // App Bar with Profile Header
+          // Profile Header with SliverAppBar
           SliverAppBar(
-            expandedHeight: 200, // Height of the expanded header
-            pinned: true, // App bar stays pinned at the top
+            expandedHeight: 200,
+            pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -30,15 +30,12 @@ class ProfileScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 40),
-                    // Dummy Profile Image
                     CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.white,
-                      backgroundImage:
-                      AssetImage('assets/icons/profile.png'), // Add a dummy image in assets
+                      backgroundImage: AssetImage('assets/icons/profile.png'),
                     ),
                     const SizedBox(height: 10),
-                    // User Name
                     Text(
                       "Neeraj Bhatt",
                       style: Style.headLineStyle3.copyWith(
@@ -47,7 +44,6 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // User Email
                     Text(
                       "neerajbhattadx@gmail.com",
                       style: Style.headLineStyle2.copyWith(
@@ -60,78 +56,44 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Body with Medical Options
+          // Profile Options List
           SliverList(
             delegate: SliverChildListDelegate([
               const SizedBox(height: 20),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.assignment,
-                title: "Reports",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>  ReportsScreen(),
-                    ),
-                  );
-                },
+                label: "Reports",
+                onTap: () => _navigateToScreen(context, ReportsScreen()),
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.calendar_today,
-                title: "Appointments",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UpcomingAppointments(),
-                    ),
-                  );
-                },
+                label: "Appointments",
+                onTap: () => _navigateToScreen(context, const UpcomingAppointments()),
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.book_online,
-                title: "Book Appointment",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BookAppointmentScreen(),
-                    ),
-                  );
-                },
+                label: "Book Appointment",
+                onTap: () => _navigateToScreen(context, const BookAppointmentScreen()),
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.medical_services,
-                title: "Medical History",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>  ReportsScreen(),
-                    ),
-                  );
-                },
+                label: "Medical History",
+                onTap: () => _navigateToScreen(context, ReportsScreen()),
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.contact_support,
-                title: "Contact Support",
-                onTap: () {
-                  // Handle contact support
-                },
+                label: "Contact Support",
+                onTap: () {},
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.privacy_tip,
-                title: "Privacy Policy",
-                onTap: () {
-                  // Handle privacy policy
-                },
+                label: "Privacy Policy",
+                onTap: () {},
               ),
-              _buildOptionTile(
+              _buildMenuItem(
                 icon: Icons.logout,
-                title: "Sign Out",
-               onTap: () {
-
-               },
+                label: "Sign Out",
+                onTap: () {},
               ),
             ]),
           ),
@@ -140,10 +102,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Reusable Option Tile Widget
-  Widget _buildOptionTile({
+  // Reusable Menu Item Widget
+  Widget _buildMenuItem({
     required IconData icon,
-    required String title,
+    required String label,
     required VoidCallback onTap,
   }) {
     return ListTile(
@@ -156,7 +118,7 @@ class ProfileScreen extends StatelessWidget {
         child: Icon(icon, color: AppTheme.primaryColor),
       ),
       title: Text(
-        title,
+        label,
         style: Style.headLineStyle2.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.black87,
@@ -164,6 +126,14 @@ class ProfileScreen extends StatelessWidget {
       ),
       trailing: Icon(Icons.arrow_forward_ios, color: AppTheme.primaryColor),
       onTap: onTap,
+    );
+  }
+
+  // Navigation Helper
+  void _navigateToScreen(BuildContext context, Widget screen) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
     );
   }
 }

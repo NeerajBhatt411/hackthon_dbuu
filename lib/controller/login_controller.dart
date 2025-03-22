@@ -16,7 +16,7 @@ class LoginController {
         .then((value) {
       Ftoast.toastMessage("Login Successfully");
 
-      // Redirect based on selected role
+
       if (role == "Patient") {
         Navigator.pushReplacement(
           context,

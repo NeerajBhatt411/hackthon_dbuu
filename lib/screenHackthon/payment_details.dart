@@ -34,7 +34,7 @@ class PaymentDetailsScreen extends StatelessWidget {
             return pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text('Appointment Bill',
+                pw.Text('Appointment Invoice',
                     style: pw.TextStyle(
                       fontSize: 24,
                       fontWeight: pw.FontWeight.bold,
@@ -42,15 +42,15 @@ class PaymentDetailsScreen extends StatelessWidget {
                     )),
                 pw.SizedBox(height: 20),
                 pw.Text('Doctor: $doctorName', style: pw.TextStyle(fontSize: 18)),
-                pw.Text('Specialty: $doctorSpecialty', style: pw.TextStyle(fontSize: 16)),
+                pw.Text('Specialization: $doctorSpecialty', style: pw.TextStyle(fontSize: 16)),
                 pw.SizedBox(height: 10),
                 pw.Text('Time Slot: $timeSlot', style: pw.TextStyle(fontSize: 16)),
                 pw.Text('Patient: $patientName', style: pw.TextStyle(fontSize: 16)),
                 pw.Text('Email: $email', style: pw.TextStyle(fontSize: 16)),
-                pw.Text('Phone: $phone', style: pw.TextStyle(fontSize: 16)),
-                pw.Text('Booked on: $timestamp', style: pw.TextStyle(fontSize: 16)),
+                pw.Text('Contact: $phone', style: pw.TextStyle(fontSize: 16)),
+                pw.Text('Appointment Date: $timestamp', style: pw.TextStyle(fontSize: 16)),
                 pw.SizedBox(height: 20),
-                pw.Text('Fees: ₹500',
+                pw.Text('Consultation Fees: ₹500',
                     style: pw.TextStyle(
                       fontSize: 20,
                       fontWeight: pw.FontWeight.bold,
@@ -63,26 +63,23 @@ class PaymentDetailsScreen extends StatelessWidget {
       );
 
       final output = await getTemporaryDirectory();
-      final file = File("${output.path}/appointment_bill.pdf");
+      final file = File("${output.path}/appointment_invoice.pdf");
       await file.writeAsBytes(await pdf.save());
-
-      // Open the file
       await OpenFile.open(file.path);
-
     } catch (e) {
-      print('Error generating PDF: $e');
+      print('Error creating PDF: $e');
     }
   }
 
-  void _handlePayment() async {
+  void _processPayment() async {
     final String upiId = "neerajbhattadx@oksbi";
-    final Uri upiUrl = Uri.parse(
-        "upi://pay?pa=$upiId&pn=Doctor Payment&mc=0000&tid=123456&tr=123456&tn=Doctor Appointment Fees&am=500&cu=INR");
+    final Uri paymentUrl = Uri.parse(
+        "upi://pay?pa=$upiId&pn=Doctor%20Fees&mc=0000&tid=987654&tr=987654&tn=Doctor%20Consultation%20Fee&am=500&cu=INR");
 
-    if (await canLaunchUrl(upiUrl)) {
-      await launchUrl(upiUrl);
+    if (await canLaunchUrl(paymentUrl)) {
+      await launchUrl(paymentUrl);
     } else {
-      print("Could not launch UPI payment");
+      print("Unable to launch payment URL");
     }
   }
 
@@ -95,45 +92,16 @@ class PaymentDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('👨‍⚕️ Doctor: $doctorName', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8),
-                    Text('🩺 Specialty: $doctorSpecialty', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
+            _buildInfoCard('👨‍⚕️ Doctor', doctorName, '🩺 Specialization', doctorSpecialty),
             SizedBox(height: 20),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('⏰ Time Slot: $timeSlot', style: TextStyle(fontSize: 16)),
-                    Text('👤 Patient: $patientName', style: TextStyle(fontSize: 16)),
-                    Text('📧 Email: $email', style: TextStyle(fontSize: 16)),
-                    Text('📞 Phone: $phone', style: TextStyle(fontSize: 16)),
-                    Text('📅 Booked on: $timestamp', style: TextStyle(fontSize: 14)),
-                  ],
-                ),
-              ),
-            ),
+            _buildInfoCard('⏰ Time Slot', timeSlot, '👤 Patient', patientName,
+                additionalDetails: {'📧 Email': email, '📞 Contact': phone, '📅 Appointment Date': timestamp}),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: _handlePayment,
+                onPressed: _processPayment,
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text('Pay Now', style: TextStyle(fontSize: 18, color: Colors.white)),
+                child: Text('Proceed to Payment', style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
             ),
             SizedBox(height: 20),
@@ -141,9 +109,31 @@ class PaymentDetailsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: _generatePdf,
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-                child: Text('Generate PDF Bill', style: TextStyle(fontSize: 18, color: Colors.white)),
+                child: Text('Download Invoice', style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(String title1, String value1, String title2, String value2, {Map<String, String>? additionalDetails}) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('$title1: $value1', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text('$title2: $value2', style: TextStyle(fontSize: 16)),
+            if (additionalDetails != null)
+              ...additionalDetails.entries.map(
+                    (entry) => Text('${entry.key}: ${entry.value}', style: TextStyle(fontSize: 16)),
+              ),
           ],
         ),
       ),

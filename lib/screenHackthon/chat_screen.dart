@@ -23,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         "contents": [
-          {"parts": [{"text": message}]} // User input
+          {"parts": [{"text": message}]}
         ]
       }),
     );

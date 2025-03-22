@@ -14,258 +14,108 @@ class LoginScreen1 extends StatefulWidget {
 }
 
 class _LoginScreen1State extends State<LoginScreen1> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  String selectedRole = "Patient";
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final LoginController _loginController = LoginController();
+  String selectedRole = "Patient";
 
-  // Email validation function
-  bool _validateEmail(String email) {
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
+  bool _isValidEmail(String email) {
+    return RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").hasMatch(email);
   }
 
-  // Password validation function
-  bool _validatePassword(String password) {
-    return password.length >= 6; // Minimum 6 characters
+  bool _isValidPassword(String password) => password.length >= 6;
+
+  void _handleLogin() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackbar("Please fill in all fields.");
+    } else if (!_isValidEmail(email)) {
+      _showSnackbar("Invalid email format.");
+    } else if (!_isValidPassword(password)) {
+      _showSnackbar("Password must be at least 6 characters long.");
+    } else {
+      await _loginController.login(email, password, selectedRole, context);
+    }
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("LOGIN SCREEN", style: AppTheme.subHeadingStyle),
+        title: Text("Login", style: AppTheme.subHeadingStyle),
         centerTitle: true,
-        elevation: 0,
         backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade50, Colors.white],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 40),
-                Text(
-                  "Welcome Back!",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primaryColor,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Take a deep breath and log in to continue your wellness journey.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
-                SizedBox(height: 40),
-                Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        customTextFormField(
-                          hintText: "Email",
-                          prefixIcon: Icons.email,
-                          controller: emailController,
-                        ),
-                        SizedBox(height: 20),
-                        customTextFormField(
-                          hintText: "Password",
-                          prefixIcon: Icons.lock,
-                          controller: passwordController,
-                          obscureText: true,
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Select Role",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        DropdownButtonFormField<String>(
-                          value: selectedRole,
-                          items: ["Patient", "Doctor"].map((String role) {
-                            return DropdownMenuItem(
-                              value: role,
-                              child: Text(
-                                role,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey.shade700,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedRole = newValue!;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey.shade100,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () async {
-                            String email = emailController.text.trim();
-                            String password = passwordController.text.trim();
-
-                            // Validate email and password
-                            if (email.isEmpty || password.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Please enter email and password"),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else if (!_validateEmail(email)) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Please enter a valid email"),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else if (!_validatePassword(password)) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Password must be at least 6 characters"),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            } else {
-                              // Call LoginController to authenticate
-                              await _loginController.login(email, password, selectedRole, context);
-                            }
-                          },
-                          child: Container(
-                            height: 50,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [AppTheme.primaryColor, Colors.blue.shade700],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Sign In",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        // Center(
-                        //   child: GestureDetector(
-                        //     onTap: () {
-                        //       // Add your forgot password logic here
-                        //     },
-                        //     child: Text(
-                        //       "Forgot Password?",
-                        //       style: TextStyle(
-                        //         color: AppTheme.primaryColor,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 14,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Center(
-                  child: Text(
-                    "OR",
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignupScreen1()),
-                    );
-                  },
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppTheme.primaryColor,
-                        width: 2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Create Account",
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            Text("Welcome Back!", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+            const SizedBox(height: 10),
+            Text("Log in to continue your journey.", style: TextStyle(fontSize: 16, color: Colors.grey.shade700)),
+            const SizedBox(height: 40),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    customTextFormField(hintText: "Email", prefixIcon: Icons.email, controller: emailController),
+                    const SizedBox(height: 20),
+                    customTextFormField(hintText: "Password", prefixIcon: Icons.lock, controller: passwordController, obscureText: true),
+                    const SizedBox(height: 20),
+                    Text("Select Role", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade700)),
+                    const SizedBox(height: 8),
+                    DropdownButtonFormField<String>(
+                      value: selectedRole,
+                      items: ["Patient", "Doctor"].map((role) => DropdownMenuItem(value: role, child: Text(role))).toList(),
+                      onChanged: (newValue) => setState(() => selectedRole = newValue!),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _handleLogin,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      child: const Text("Sign In", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 40),
-              ],
+              ),
             ),
-          ),
+            const SizedBox(height: 20),
+            Center(child: Text("OR", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700))),
+            const SizedBox(height: 20),
+            OutlinedButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen1())),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                side: BorderSide(color: AppTheme.primaryColor, width: 2),
+              ),
+              child: Text("Create Account", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+            ),
+            const SizedBox(height: 40),
+          ],
         ),
       ),
     );

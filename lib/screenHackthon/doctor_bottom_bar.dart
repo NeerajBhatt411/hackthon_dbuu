@@ -5,14 +5,14 @@ import 'package:untitled2/screenHackthon/reports_screen.dart';
 
 import 'home_screen1.dart';
 
-class PatientBottomBar extends StatefulWidget {
-  const PatientBottomBar({super.key});
+class   DoctorBottomBar   extends StatefulWidget {
+  const DoctorBottomBar({super.key});
 
   @override
-  State<PatientBottomBar> createState() => _BottomBarState();
+  State<DoctorBottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<PatientBottomBar> {
+class _BottomBarState extends State<DoctorBottomBar> {
   List<Widget> list = [HomeScreen1(), ReportsScreen(), UpcomingAppointments(), ProfileScreen()];
 
   int _selectedIndex = 0;
@@ -26,6 +26,7 @@ class _BottomBarState extends State<PatientBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Docotor HomeScreen"),),
       body: Center(child: list[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,

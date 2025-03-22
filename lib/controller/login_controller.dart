@@ -1,64 +1,39 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:untitled2/screenHackthon/patient_home_screen.dart';
+import 'package:untitled2/screenHackthon/patient_bottom_bar.dart';
+import 'package:untitled2/screenHackthon/doctor_home_screen.dart';
 
-import '../screens/home_screen.dart';
 import '../util/toast.dart';
 
 class LoginController {
-// function to login user using email and password
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> login(
-      String email, String password, BuildContext context) async {
+      String email, String password, String role, BuildContext context) async {
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)
-        .then(
-          (value) {
-        Ftoast.toastMessage("Login Successfully");
+        .then((value) {
+      Ftoast.toastMessage("Login Successfully");
+
+      // Redirect based on selected role
+      if (role == "Patient") {
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PatientHomeScreen(),
-            ));
-      },
-    ).onError(
-          (error, stackTrace) {
-        Ftoast.toastMessage(error.toString());
-      },
-    );
-  }
-
-  // function to login using Google
-  Future<void> signInWithGoogle(BuildContext context) async {
-    //select user account
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-      Ftoast.toastMessage("User Successfully Logged in with Google ");
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => PatientHomeScreen(),));
-    },).onError((error, stackTrace) {
-      Ftoast.toastMessage("usser failed to login ${error.toString()}");
-
-    },);
-  }
-
-
-  // Sign out
-  Future<void> signOut() async {
-    await _auth.signOut();
+          context,
+          MaterialPageRoute(
+            builder: (context) => PatientBottomBar(),
+          ),
+        );
+      } else if (role == "Doctor") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DoctorHomeScreen(),
+          ),
+        );
+      }
+    }).onError((error, stackTrace) {
+      Ftoast.toastMessage(error.toString());
+    });
   }
 }
